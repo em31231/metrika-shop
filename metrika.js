@@ -3,7 +3,7 @@
 // ==========================================
 // 1) Создай счетчик в Яндекс Метрике.
 // 2) Замени 0 на номер своего счетчика, например: 12345678
-window.METRIKA_COUNTER_ID = 0;
+window.METRIKA_COUNTER_ID = 112553743;
 
 window.dataLayer = window.dataLayer || [];
 
