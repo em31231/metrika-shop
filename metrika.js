@@ -1,0 +1,59 @@
+// ==========================================
+// ЯНДЕКС МЕТРИКА — НАСТРОЙКА ДЛЯ ОБУЧЕНИЯ
+// ==========================================
+// 1) Создай счетчик в Яндекс Метрике.
+// 2) Замени 0 на номер своего счетчика, например: 12345678
+window.METRIKA_COUNTER_ID = 0;
+
+window.dataLayer = window.dataLayer || [];
+
+(function initMetrika() {
+  const id = Number(window.METRIKA_COUNTER_ID);
+  if (!id) {
+    console.info('[Метрика] Демо-режим: укажи METRIKA_COUNTER_ID в metrika.js');
+    return;
+  }
+
+  (function(m,e,t,r,i,k,a){
+    m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();
+    for (var j=0;j<document.scripts.length;j++) { if (document.scripts[j].src===r) return; }
+    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+  })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+
+  ym(id, 'init', {
+    clickmap: true,
+    trackLinks: true,
+    accurateTrackBounce: true,
+    webvisor: true,
+    ecommerce: 'dataLayer'
+  });
+})();
+
+window.trackGoal = function(goal, params = {}) {
+  console.info('[Goal]', goal, params);
+  const id = Number(window.METRIKA_COUNTER_ID);
+  if (id && typeof window.ym === 'function') {
+    window.ym(id, 'reachGoal', goal, params);
+  }
+};
+
+window.pushEcommerce = function(action, products, actionField = null) {
+  const ecommerce = { currencyCode: 'RUB' };
+
+  // В Enhanced Ecommerce просмотр списка передаётся массивом impressions,
+  // остальные товарные действия — объектом с массивом products.
+  if (action === 'impressions') {
+    ecommerce.impressions = products;
+  } else {
+    ecommerce[action] = { products };
+  }
+
+  if (action === 'purchase' && actionField) {
+    ecommerce.purchase.actionField = actionField;
+  }
+
+  const payload = { ecommerce };
+  window.dataLayer.push(payload);
+  console.info('[Ecommerce]', payload);
+};

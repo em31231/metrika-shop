@@ -1,1 +1,55 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Оформление заказа — VOLT</title><link rel="stylesheet" href="css/styles.css"><script src="js/metrika.js"></script></head><body><div data-header></div><main class="container" data-checkout-page></main><div data-footer></div><script src="js/data.js"></script><script src="js/app.js"></script></body></html>
+# VOLT — учебный интернет-магазин для Яндекс Метрики
+
+## Быстрый запуск
+1. Открой папку проекта в VS Code.
+2. В `metrika.js` найди строку `window.METRIKA_COUNTER_ID = 0;`.
+3. Замени `0` на номер своего счетчика Яндекс Метрики.
+4. Запускай сайт через локальный сервер, например расширение **Live Server** в VS Code. Не открывай страницы просто как `file://...`.
+5. В настройках счетчика включи **Электронную коммерцию** и проверь, что контейнер — `dataLayer`.
+
+## Цели, которые можно создать в Метрике
+Тип цели: **Целевое событие / JavaScript-событие**.
+
+- `hero_catalog_click` — клик по CTA на первом экране
+- `product_click` — клик по товару в каталоге
+- `product_view` — просмотр карточки товара
+- `add_to_cart` — добавление в корзину
+- `remove_from_cart` — удаление из корзины
+- `open_cart` — открытие корзины
+- `begin_checkout` — переход к оформлению
+- `promo_use` — применение промокода `METRIKA10`
+- `search` — использование поиска
+- `category_filter` — использование фильтра категории
+- `phone_click` — клик по телефону
+- `email_click` — клик по email
+- `order_complete` — подтверждение заказа
+
+## E-commerce события
+Через `window.dataLayer` отправляются:
+- `impressions` — просмотр списка товаров
+- `click` — клик по товару
+- `detail` — просмотр карточки
+- `add` — добавление в корзину
+- `remove` — удаление из корзины
+- `purchase` — покупка
+
+## Учебная воронка
+`product_view → add_to_cart → open_cart → begin_checkout → order_complete`
+
+Можно создать составную цель из этих шагов и сравнить конверсию.
+
+## Полезно для практики
+- В консоли браузера все события дополнительно выводятся как `[Goal]` и `[Ecommerce]`.
+- Корзина хранится в `localStorage`, поэтому не пропадает при переходе между страницами.
+- Реальных платежей, отправки форм и серверного бэкенда нет.
+- Для теста скидки используй промокод `METRIKA10`.
+
+## Структура
+- `index.html` — главная и каталог
+- `product.html?id=p001` — карточка товара
+- `cart.html` — корзина
+- `checkout.html` — оформление заказа
+- `thanks.html` — успешный заказ
+- `metrika.js` — подключение счетчика и аналитика
+- `app.js` — логика магазина
+- `data.js` — товары
