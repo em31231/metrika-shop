@@ -43,6 +43,23 @@ function addToCart(id, quantity = 1, source = 'Каталог') {
 
   trackGoal('add_to_cart', { product_id: id, product_name: product.name, order_price: product.price, currency: 'RUB' });
   pushEcommerce('add', [ecommerceProduct(product, quantity, null, source)]);
+  // GA4 Ecommerce: добавление товара в корзину
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: 'add_to_cart',
+    ecommerce: {
+      currency: 'RUB',
+      value: product.price * quantity,
+      items: [{
+        item_id: product.id,
+        item_name: product.name,
+        item_brand: product.brand,
+        item_category: product.category,
+        price: product.price,
+        quantity: quantity
+      }]
+    }
+  });
   showToast(`${product.name} добавлен в корзину`);
 }
 
