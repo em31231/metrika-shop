@@ -310,7 +310,31 @@ function initCart() {
         render();
       } else showToast('Промокод не найден');
     });
-    root.querySelector('[data-checkout]').addEventListener('click', () => trackGoal('begin_checkout', { order_price: getCartTotal(), currency: 'RUB' }));
+    root.querySelector('[data-checkout]').addEventListener('click', () => {
+  // Старая цель
+  trackGoal('begin_checkout', {
+    order_price: getCartTotal(),
+    currency: 'RUB'
+  });
+
+  // GA4 Ecommerce: начало оформления заказа
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: 'begin_checkout',
+    ecommerce: {
+      currency: 'RUB',
+      value: getCartTotal(),
+      items: getCartItems().map(({ product, qty }) => ({
+        item_id: product.id,
+        item_name: product.name,
+        item_brand: product.brand,
+        item_category: product.category,
+        price: product.price,
+        quantity: qty
+      }))
+    }
+  });
+});
   }
 
   trackGoal('open_cart', { cart_items: cartCount(), order_price: getCartTotal(), currency: 'RUB' });
