@@ -244,6 +244,23 @@ function initProduct() {
 
   pushEcommerce('detail', [ecommerceProduct(product, 1, 1, 'Карточка товара')]);
   trackGoal('product_view', { product_id: product.id, product_name: product.name });
+  // GA4 Ecommerce: просмотр товара
+window.dataLayer = window.dataLayer || [];
+window.dataLayer.push({
+  event: 'view_item',
+  ecommerce: {
+    currency: 'RUB',
+    value: product.price,
+    items: [{
+      item_id: product.id,
+      item_name: product.name,
+      item_brand: product.brand,
+      item_category: product.category,
+      price: product.price,
+      quantity: 1
+    }]
+  }
+});
   root.querySelector('[data-add-detail]').addEventListener('click', () => addToCart(product.id, 1, 'Карточка товара'));
 }
 
