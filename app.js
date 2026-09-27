@@ -385,7 +385,25 @@ function initCheckout() {
     // а затем сохраняем данные для страницы «Спасибо».
     pushEcommerce('purchase', products, { id: orderId, revenue: total, coupon: localStorage.getItem(PROMO_KEY) || undefined });
     trackGoal('order_complete', { order_id: orderId, order_price: total, currency: 'RUB', payment: formData.payment });
+    // GA4 Ecommerce: успешная покупка
+window.dataLayer = window.dataLayer || [];
 
+window.dataLayer.push({
+  event: 'purchase',
+  ecommerce: {
+    transaction_id: orderId,
+    currency: 'RUB',
+    value: total,
+    items: getCartItems().map(({ product, qty }) => ({
+      item_id: product.id,
+      item_name: product.name,
+      item_brand: product.brand,
+      item_category: product.category,
+      price: product.price,
+      quantity: qty
+    }))
+  }
+});
     localStorage.setItem(ORDER_KEY, JSON.stringify({ id: orderId, total, products, name: formData.name }));
     localStorage.removeItem(CART_KEY);
     localStorage.removeItem(PROMO_KEY);
